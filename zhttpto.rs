@@ -81,7 +81,15 @@ fn main() {
 			let html_extension = ~".html";
 			if(str::eq(&extension, &html_extension)) {
 			     let file_name_abs = file_name.slice_from(1);
-		             match File::open(&Path::new(file_name_abs.clone())) {
+			     let path = Path::new(file_name_abs);
+			     let opened_file: Option<File>;
+			     if path.exists() && path.is_file() {
+			     	opened_file = File::open(&path);
+			     }
+			     else {
+			     	opened_file = None;
+			     }
+		             match opened_file {
 			     	   Some(html_file) => {
 				              let mut html_file_mut = html_file;
 					      let msg_bytes: ~[u8] = html_file_mut.read_to_end();
